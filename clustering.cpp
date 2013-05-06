@@ -25,12 +25,12 @@ public:
 };// record the result of one line
 
 int Id[LINENUMBER] = {0};	//AuthorID
-char* Name[LINENUMBER] = {0};	//Author Name	
-char* Affiliation[LINENUMBER] = {0};	//Affiliation	
+char* Name[LINENUMBER] = {0};	//Author Name
+char* Affiliation[LINENUMBER] = {0};	//Affiliation
 int flag = 1;	//count variable
 int IsFirstLine = 1;
 int Cnt = 0;	//count variable
-int AuthorNumber = 0;	
+int AuthorNumber = 0;
 vector<MyPool> SameName;	//record the result using a vector
 
 void hlog (void *data, size_t len, void *t)
@@ -94,21 +94,21 @@ int main (int argc,char *argv[]) {
 	size_t bytes_read;
 	if((p=(struct csv_parser*)malloc(sizeof(struct csv_parser))) == 0) return -1;
 	csv_init(p, (unsigned char)0);
-	fp = (argc == 1) ? fopen("Author.csv","r") : fopen(argv[1], "r");
+	fp = (argc == 1) ? fopen("C:/Users/Eagles2F/Desktop/DionyBuddy/data/dataRev2/Author.csv","r") : fopen(argv[1], "r");
 	if (fp == NULL)
 	{
 		fprintf(stderr, "Failed to open %s\n", argv[1]);
 	}
-	
 
-	while ((bytes_read=fread(buf, 1, 1024, fp)) > 0) 
+
+	while ((bytes_read=fread(buf, 1, 1024, fp)) > 0)
 	{
-		if (csv_parse(p, buf, bytes_read, hlog, nlog,&t) != bytes_read) 
+		if (csv_parse(p, buf, bytes_read, hlog, nlog,&t) != bytes_read)
 		{
 			fprintf(stderr, "Error while parsing file: %s\n", csv_strerror(csv_error(p)));
 		}
 	}
-	
+    fclose(fp);
 	for(int i = 0;i < AuthorNumber;i ++)
 	{
 		MyPool *pMP = new MyPool;
@@ -137,7 +137,7 @@ int main (int argc,char *argv[]) {
 			printf(".");
 		}
 	}
-	
+
 	FILE *pFile = fopen("Submission.csv","w");
 	fprintf(pFile,"AuthorId,DuplicateAuthorIds\n");
 	for(int i = 0;i < AuthorNumber;i ++)
@@ -149,7 +149,7 @@ int main (int argc,char *argv[]) {
 		}
 		fprintf(pFile,"%d\n",SameName[i].m_Id[SameName[i].m_Cnt - 1]);
 	}
-
+    fclose(pFile);
 	getchar();
 
 	return EXIT_SUCCESS;
